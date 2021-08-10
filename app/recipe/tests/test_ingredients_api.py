@@ -9,6 +9,7 @@ from core.models import Ingredient
 
 from recipe.serializers import IngredientSerializer
 
+# Name after the app name is name of the Model. Does not affect routing in url.py
 INGREDIENTS_URL = reverse('recipe:ingredient-list')
 
 

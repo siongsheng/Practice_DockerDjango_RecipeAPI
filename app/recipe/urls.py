@@ -3,9 +3,10 @@ from rest_framework.routers import DefaultRouter
 from recipe import views
 
 router = DefaultRouter()
-router.register('tags', views.TagViewSets)
-router.register('ingredients', views.IngredientViewSets)
-router.register('recipes', views.RecipeViewSets)
+# Names registered here will reflect in the URL
+router.register('taag', views.TagViewSets)
+router.register('ingredientasd', views.IngredientViewSets)
+router.register('recipeasd', views.RecipeViewSets)
 
 app_name = 'recipe'
 
