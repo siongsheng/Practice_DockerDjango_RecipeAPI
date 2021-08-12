@@ -44,6 +44,10 @@ class RecipeViewSets(viewsets.ModelViewSet):
 
     def get_serializer_class(self):
         """Return appropriate serializer class"""
-        if self.action == 'retrieve':
+        if self.action == 'retrieve':  # Use this when calling for detail (i.e. specific records)
             return serializers.RecipeDetailSerializer
         return super().get_serializer_class()
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+        return super().perform_create(serializer)
