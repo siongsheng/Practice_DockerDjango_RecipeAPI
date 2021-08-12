@@ -152,3 +152,40 @@ class PrivateRecipeApiTests(TestCase):
         self.assertEqual(ingredients.count(), 2)
         self.assertIn(ingredient1, ingredients)
         self.assertIn(ingredient2, ingredients)
+
+    def test_patch_recipe(self):
+        """Test updating recipe with Patch"""
+        recipe = sample_recipe(user=self.user)
+        recipe.tags.add(sample_tag(user=self.user))
+        newTag = sample_tag(user=self.user)
+        payload = {
+            'title': 'Chicken Tikka',
+            'tags': [newTag.id]
+        }
+        url = detail_url(recipe.id)
+        # Not sure why no need check for status code
+        res = self.client.patch(url, payload)
+        recipe.refresh_from_db()
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(recipe.title, payload['title'])
+        self.assertEqual(recipe.tags.count(), 1)
+        self.assertIn(newTag, recipe.tags.all())
+
+    def test_put_recipe(self):
+        """Test updating recipe with Put"""
+        recipe = sample_recipe(user=self.user)
+        recipe.tags.add(sample_tag(user=self.user))
+        payload = {
+            'title': 'Spagetti Carbonara',
+            'time_in_minutes': 25,
+            'price': 5.00
+        }
+        url = detail_url(recipe.id)
+        self.client.put(url, payload)
+        recipe.refresh_from_db()
+
+        self.assertEqual(recipe.title, payload['title'])
+        self.assertEqual(recipe.time_in_minutes, payload['time_in_minutes'])
+        self.assertEqual(recipe.price, payload['price'])
+        self.assertEqual(recipe.tags.count(), 0)
